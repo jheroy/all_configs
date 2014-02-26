@@ -1,0 +1,30 @@
+. ~/.sshalias/ke2.server
+alias subl='open -a "Sublime Text"'
+alias e='open -a "Emacs"'
+alias s3='open -a "Sublime Text"'
+alias s='open -a "Sublime Text"'
+alias m='mvim'
+alias gt='cd ~/work/git/global-theat-server'
+alias ke='cd ~/work/git/kings-server'
+alias ks="cd ~/work/git/kings-server/ "
+alias ke2="cd ~/work/git/ke2/ "
+alias ka="cd ~/work/git/kings-admin-api/"
+alias kg="cd ~/work/git/kings-gateway/"
+alias kga="cd ~/work/git/kings-gateway-admin/ "
+
+alias gst="git status"
+alias gss="git status -s"
+alias gca="git commit -a"
+alias gc="git commit"
+alias gco="git checkout"
+alias gb="git branch"
+alias gba="git branch -a"
+alias gp="git push"
+alias gl="git pull"
+alias gcm="git checkout master"
+alias gcma="git checkout master-android"
+alias gcd="git checkout develop"
+alias gcd="git push --set-upstream origin f_make_pkg"
+
+alias l='tmuxp load'
+alias k='tmuxp kill-session'

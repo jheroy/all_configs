@@ -1,0 +1,28 @@
+session_name: ke2
+windows:
+- window_name: Project
+#layout: main-horizontal
+  layout: main-vertical
+  options:
+    main-pane-height: 45
+    main-pane-width: 145
+  focus: true
+  shell_command_before:
+    - fish
+    - cd ~/work/git/ke2
+  panes:
+    - ranger
+    - shell_command:
+        - sudo mongod &
+        - tail -f agent.log
+    - shell_command:
+        - git pull
+        - make gen
+        - make
+
+- window_name: Server
+  panes:
+    - shell_command:
+        - ke2.debug
+        - cd ke2
+        - git pull
