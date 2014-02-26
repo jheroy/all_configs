@@ -12,7 +12,7 @@ for path in ${CONFIGS[@]}; do
         fi
 done
 
-CONF_PATH=`pwd`
+CONF_PATH=`dirname $0`
 
 echo $CONF_PATH
 
@@ -23,6 +23,6 @@ ln -s $CONF_PATH/tmux/tmuxp $HOME/.tmuxp
 
 mkdir -p $HOME/.config/fish
 
-ln -s $DROPBOX_PATH/alias $HOME/.config/alias
-ln -s $DROPBOX_PATH/config.fish $HOME/.config/fish/config.fish
+ln -s $CONF_PATH/alias $HOME/.config/alias
+ln -s $CONF_PATH/config.fish $HOME/.config/fish/config.fish
 
