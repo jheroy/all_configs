@@ -8,7 +8,6 @@ filetype off
 
 " Vundle setting {{{
 set rtp+=~/.vim/bundle/vundle
-set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
@@ -19,8 +18,11 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
 Bundle 'gregsexton/VimCalc'
+" Bundle 'Valloric/YouCompleteMe'
+" Bundle 'mileszs/ack.vim'
 Bundle 'rking/ag.vim'
 Bundle 'dyng/ctrlsf.vim'
+Bundle 'rizzatti/dash.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'gregsexton/gitv'
 Bundle 'vim-scripts/matchit.zip'
@@ -31,47 +33,37 @@ Bundle 'scrooloose/syntastic'
 Bundle 'majutsushi/tagbar'
 Bundle 'SirVer/ultisnips'
 Bundle 'honza/vim-snippets'
-Bundle 'xolox/vim-misc'
 Bundle 'drmingdrmer/xptemplate'
+" Bundle 'Shougo/unite.vim'
 Bundle 'bling/vim-airline'
 Bundle 'jheroy/vim-solarized'
-Bundle 'jheroy/taghighlight'
 Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'tpope/vim-surround'
 Bundle 'jheroy/vim-gocode'
+Bundle 'nsf/gocode'
 Bundle 'asins/vimcdoc'
 Bundle 'tomasr/molokai'
 Bundle 'vim-scripts/FencView.vim'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'sjl/vitality.vim'
 Bundle 'dhruvasagar/vim-table-mode'
+" Bundle 'jiazhoulvke/MarkdownView'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'junegunn/vim-easy-align'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-dispatch'
-Bundle 'sjl/gundo.vim'
-Bundle 'oblitum/YouCompleteMe'
-Bundle 'dgryski/vim-godef'
-Bundle 'klen/python-mode'
-Bundle 'vimwiki/vimwiki'
-
-
-
-" Bundle 'xolox/vim-easytags'
-" Bundle 'wincent/command-t'
-
-" Bundle 'rizzatti/dash.vim'
-" Bundle 'Shougo/unite.vim'
-" Bundle 'nsf/gocode'
-" Bundle 'jiazhoulvke/MarkdownView'
-" Bundle 'farseer90718/vim-taskwarrior'
+"Bundle 'farseer90718/vim-taskwarrior'
 " Bundle 'airblade/vim-gitgutter'
 " Bundle 'FredKSchott/CoVim'
+Bundle 'Floobits/floobits-vim'
+
 " Bundle 'ervandew/supertab'
+Bundle 'sjl/gundo.vim'
+Bundle 'xolox/vim-misc'
+Bundle 'oblitum/YouCompleteMe'
+Bundle 'dgryski/vim-godef'
 " Bundle 'Shougo/neocomplcache.vim'
 " Bundle 'xolox/vim-easytags'
-" Bundle 'Valloric/YouCompleteMe'
-" Bundle 'mileszs/ack.vim'
 " }}}
 " Pathogen setting {{{
 "execute pathogen#infect('base/{}') 
@@ -117,7 +109,7 @@ set ignorecase                  " Search case insensitive...
 set smartcase                   " ... but not when search pattern contains upper case characters
 set clipboard=unnamed
 let mapleader = ','
-set linespace=2
+set linespace=1
 set completeopt=""
 set updatetime=100
 " set fmr={,}
@@ -155,7 +147,6 @@ nmap <S-H> :bp<CR>
 nmap <S-L> :bn<CR>
 " nmap <S-H> :tabp<CR>
 " nmap <S-L> :tabn<CR>
-inoremap <ESC> <ESC>:set iminsert=0<CR>
 
 cmap w!! %!sudo tee > /dev/null %
 " map <C-/> :TComment<cr>
@@ -212,15 +203,10 @@ if has("gui_running")
         map <C-k> <C-W>k
         map <C-l> <C-W>l
         map <C-h> <C-W>h
-        set guifont=Source\ Code\ Pro\ Light\ for\ Powerline:h15
-        " set guifont=Inconsolata\ LGC:h16
-        " set guifont=Powerline\ Consolas:h16
-        
-	" set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h18
+        set guifont=Source\ Code\ Pro\ for\ Powerline:h13
 	" set guifont=Monaco:h13
-        " set guifont=Source\ Code\ Pro\ ExtraLight:h14
-        " set guifont=Source\ Code\ Pro\ Light:h14
-	" set transparency=5 " Make the window slightly transparent
+        " set guifont=Source\ Code\ Pro\ ExtraLight:h10
+	" set transparency=3 " Make the window slightly transparent
 	set background=light
 	" colorscheme solarized
 	colorscheme molokai
@@ -239,13 +225,13 @@ if has("gui_running")
                 set clipboard+=unnamed
                 " set guifont=Consolas:h14
                 " set guifont=GohuFont:h14
-                set transparency=5 " Make the window slightly transparent
+                set transparency=10 " Make the window slightly transparent
                 set fullscreen
                 set numberwidth=4
                 "}}}
                 " Open file fuzzy {{{
                 let g:ctrlp_map = '<D-p>'
-                " nmap <D-t> :Unite file_rec<cr>
+                nmap <D-t> :Unite file_rec<cr>
                 " Open goto file
                 " nmap <D-t> :CtrlP<cr>
                 " imap <D-t> <esc>:CtrlP<cr>
@@ -333,8 +319,8 @@ if has("gui_running")
 
                 " Stop completion with enter, in addition to default ctrl+y
                 imap <expr> <CR> pumvisible() ? "\<C-y>" : "<Plug>delimitMateCR"
-                " imap <expr> <S-j> pumvisible() ? "\<Down>" : "\<S-j>"
-                " imap <expr> <S-k> pumvisible() ? "\<Up>" : "\<S-k>"
+                imap <expr> <C-J> pumvisible() ? "\<Down>" : "\<C-J>"
+                imap <expr> <C-K> pumvisible() ? "\<Up>" : "\<C-K>"
         endif
 endif
 "}}}
@@ -482,10 +468,10 @@ let g:ctrlp_prompt_mappings = {
 " YouCompleteMe {{{
 "let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_complete_in_comments_and_strings = 1
+" let g:ycm_complete_in_comments_and_strings = 1
 let g:ycm_complete_in_comments=0
 let g:ycm_complete_in_strings=0
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_key_list_previous_completion = []
 let g:ycm_key_list_select_completion = []
@@ -529,11 +515,12 @@ function! g:UltiSnips_Complete()
         return ""
 endfunction
 
-" let g:UltiSnipsJumpForwardTrigger="<s-tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "ultisnips-snippets"]
-let g:UltiSnipsExpandTrigger="<tab>"
+
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+" let g:UltiSnipsJumpForwardTrigger="<s-tab>"
+" let g:UltiSnipsListSnippets="<c-e>"
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "ultisnips-snippets"]
+" let g:UltiSnipsExpandTrigger="<tab>"
 " }}}
 " Reopen last closed buffers "{{{
 " exclude the buffer closed with :bw :qall :)
@@ -556,7 +543,7 @@ function! OpenBufList()
         endif
 endfunction "}}}
 " Syntastic {{{
-let g:syntastic_check_on_wq=1
+let g:syntastic_check_on_wq=0
 autocmd FileType rb let g:syntastic_auto_jump=1
 autocmd FileType rb let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=1
@@ -569,7 +556,6 @@ let g:syntastic_mode_map = { "mode": "passive",
 " }}}
 " Alias {{{
 command! Ke2 lcd ~/work/git/ke2/
-command! CO CtrlSFOpen
 "}}}
 " FileType setting {{{
 " autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> :%s/\s\+$//e
@@ -661,15 +647,12 @@ augroup END
 let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#left_sep = ' '
 " let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline_theme='tomorrow'
+let g:airline_theme='tomorrow'
+if has("gui_running") 
 let g:airline_theme='badwolf'
 " let g:airline_theme='kolor'
-if has("gui_running") 
-	let g:airline_theme='badwolf'
-	" let g:airline_theme='tomorrow'
-	" let g:airline_theme='kolor'
-	let g:airline_powerline_fonts=1
 endif
+let g:airline_powerline_fonts=1
 "}}}
 " Xptemplate {{{
 " let g:SuperTabMappingForward = '<Plug>supertabKey'
@@ -690,7 +673,6 @@ let g:gocode_gofmt_tabs=''
 let g:go_fmt_autofmt = 0
 
 set tags+=./tags
-set tags+=./root_tags
 " set tags+=$GOROOT/tags
 " let g:easytags_dynamic_files=1
 " let g:easytags_languages = {
@@ -705,90 +687,22 @@ set tags+=./root_tags
 
 hi SpecialKey cterm=NONE ctermfg=NONE gui=NONE guifg=#DDDDDD guibg=NONE
 " unmap <esc>
-function! RegenTag()  
+function RegenTag()  
     let tagfile = findfile("tags", ".;")  
-    let tagtypesfile= findfile("tagtypes_go", ".;")  
     if strlen(tagfile) == 0  
         let tagfile = "./tags"  
     endif  
     " call system("nohup ctags -R . $GOROOT > " . tagfile ." >/dev/null &")  
     call system("ctags -R . > " . tagfile)  
-    " call system("cat ". tagfile ."|ag 't$'|cut -f1|sort|uniq > " . tagtypesfile)
-    " call system("cat go_keywords " . tagtypesfile . "|sort|uniq -u|sed 's/.*/syn keyword goTagTypes &/' > go_tagtypes.vim")
-    call system("gen_go_tag_types.sh")
-    source $GOPATH/go_tagtypes.vim
-    " source $GOPATH/go_tagfunctions.vim
-    " call system("cat root_tags >> " . tagfile)  
     call system("python /usr/bin/gen_func_snippet")
 endfunction  
   
 au BufWritePost *.go Fmt
-
-"Clear more empty line
-" au BufWritePre * %s/\n\{2,\}/\r\r/ | call feedkeys("\<C-o>","n")
-
 " au BufWritePost *.cpp,*.h,*.c,*.go silent UpdateTypesFileOnly
 " let g:TagHighlightSettings['OnlyGenerateTypesIfPresent'] = 1
-" au BufWritePost *.cpp,*.h,*.c,*.go call RegenTag()  
-" autocmd BufWritePost *.go UpdateTypesFileOnly
+au BufWritePost *.cpp,*.h,*.c,*.go call RegenTag()  
+autocmd BufWritePost *.go UpdateTypesFileOnly
 " autocmd BufWritePost *.go !gen_func_snippet
-set fileencodings=utf-8,ucs-bom,gb18030,default
+set fileencodings=ucs-bom,gb18030,utf-8,default
 let g:godef_split=0
 let g:godef_same_file_in_same_window=1
-
-function! SaveWithAction()
-        exec ":w"
-        call RegenTag()
-        " exec ":UpdateTypesFileOnly"
-endfunction
-command! W call SaveWithAction()
-let g:pymode_rope_completion_on_dot=0
-let g:pymode_rope_completion=0
-let g:loaded_TagHLDebug=1
-autocmd FileType python nmap <buffer> gd <C-c>g
-
-autocmd FileType go :source $GOPATH/go_tagtypes.vim
-" autocmd FileType go :source $GOPATH/go_tagfunctions.vim
-let wiki_re = {}
-let wiki_re.path = '~/work/git/ke2/wiki/'
-let wiki_re.path_html = '~/work/git/ke2/wiki_html/'
-let wiki_re.template_path = '~/work/git/ke2/wiki_html/template'
-let wiki_re.template_default = 'default'
-let wiki_re.template_ext= '.htm'
-let wiki_re.auto_export= 1
-let wiki_re.nested_syntaxes = {'python': 'python', "go": 'go', "shell": "shell", "vim": "vim"}
-" let wiki_re.ext = 'htm'
-let g:vimwiki_list = [ wiki_re ]
-let g:vimwiki_hl_cb_checked = 1
-" Ultisnips Jump mapping {{{
-function! Neoj()
-    if pumvisible() == 1
-        return "\<C-n>"
-    else
-        call UltiSnips#JumpForwards()
-        if g:ulti_jump_forwards_res == 0
-            return "\<C-j>"
-        endif
-        return ""
-    endif
-endfunction
-
-function! Neok()
-    if pumvisible() == 1
-        return "\<C-p>"
-    else
-        call UltiSnips#JumpBackwards()
-        if g:ulti_jump_backwards_res == 0
-            return "\<C-k>"
-        endif
-        return ""
-    endif
-endfunction
-
-let g:UltiSnipsJumpForwardTrigger = "<nop>"
-let g:UltiSnipsJumpBackwardTrigger = "<nop>"
-inoremap <silent> <C-j> <C-R>=Neoj()<CR>
-snoremap <silent> <C-j> <Esc>:call UltiSnips#JumpForwards()<CR>
-inoremap <silent> <C-k> <C-R>=Neok()<CR>
-snoremap <silent> <C-k> <Esc>:call UltiSnips#JumpBackwards()<CR>
-"}}} Ultisnip Jump mapping end

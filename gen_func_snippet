@@ -1,0 +1,59 @@
+#!/usr/bin/python
+#coding:utf-8
+import re
+import os
+
+func_dict={}
+def gen_func_list():
+        """@todo: Docstring for gen_func_list.
+        :returns: @todo
+
+        """
+        tag_file = open(os.getenv('GOPATH')+'/tags', 'r')
+        return re.findall(r'func (\w+\([^\)]+\))', tag_file.read())
+        pass
+def gen_snippet(str):
+        func_name = str.split('(')[0]
+        parameters_str = re.findall(r'\(([^\)]+)\)', str)[0]
+        parameters = parameters_str.split(',')
+
+        try:
+            func_dict[func_name]
+        except:
+            func_dict[func_name] = True
+        else:
+            return ""
+
+
+        # if func_dict[func_name] :
+        #     return ""
+        # else:
+        #     func_dict[func_name] = True
+
+        snippet = 'snippet %s "%s"\n' % (func_name, str)
+        snippet += '%s(' %func_name
+        index = 1
+        for p in parameters:
+                snippet += ' ${%d:%s}' % (index, p.strip())
+                # snippet += '⟪%s⟫' % (p.strip())
+
+                if p != parameters[-1]:
+                        snippet += ','
+                        pass
+                index += 1
+                pass
+        snippet += ')\nendsnippet\n\n'
+        return snippet
+
+        pass
+
+def main():
+        snippet_file = open(os.getenv('HOME')+'/.vim/UltiSnips/go.snippets', 'w')
+        for f  in gen_func_list():
+                snippet_file.write(gen_snippet(f))
+                pass
+        pass
+
+if __name__ == '__main__':
+        main()
+
